@@ -11,7 +11,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Container, Body, Header, Footer } from 'native-base'
 
-
 const DrawerContent = (props) => {
   return(
       <Container>

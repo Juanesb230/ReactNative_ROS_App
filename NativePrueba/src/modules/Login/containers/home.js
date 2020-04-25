@@ -55,7 +55,7 @@ class AnatomyExample extends Component {
             </Item>
             <Text style={{fontSize: 20, marginTop:'5%'}}>Port:</Text>
             <Item rounded style={{width: '50%', borderColor:'black', marginTop:'5%'}}>
-              <Input placeholder='e.g. 8081' onChangeText={(port) => this.setState({port})} style={{textAlign:'center'}}/>
+              <Input keyboardType='phone-pad' placeholder='e.g. 8081' onChangeText={(port) => this.setState({port})} style={{textAlign:'center'}}/>
             </Item>
             <Button onPress={this.save_ip} rounded primary style={{width: '35%',marginLeft: '33%', marginTop:'5%'}}>
               <Text style={{marginLeft:'15%'}}>Connect</Text>

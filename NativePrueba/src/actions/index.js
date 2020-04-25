@@ -12,3 +12,16 @@ export const port_master = (portID) => {
     }
 }
 
+export const vref = (vrefID) => {
+    return {
+        type: 'vref',
+        payload: vrefID
+    }
+}
+
+export const wref = (wrefID) => {
+    return {
+        type: 'wref',
+        payload: wrefID
+    }
+}
