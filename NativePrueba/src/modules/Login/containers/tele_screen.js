@@ -37,10 +37,11 @@ class AnatomyExample extends Component {
         </Header>
         <View style={{flex:0.05, marginTop:'2%'}}>
             <Text style={{textAlign: 'left'}}>Server connection: {this.props.ipID}:{this.props.portID}</Text>
+            <Text style={{textAlign: 'left', marginTop: '3%'}}>Velocity Topic: {this.props.top_velID}</Text>
             <Text style={{textAlign: 'left', marginTop: '3%'}}>Lineal velocity: {this.props.vrefID} (m/s)</Text>
             <Text style={{textAlign: 'left'}}>Angular velocity: {this.props.wrefID} (rad/s)</Text>
           </View>
-        <View style={{flex: 1, flexDirection: 'column',justifyContent: 'space-around', alignItems: 'center', marginTop:'7%'}}>        
+        <View style={{flex: 1, flexDirection: 'column',justifyContent: 'space-around', alignItems: 'center', marginTop:'18%'}}>        
           <View style={{width: 50, height: 50}} >
             <Button large light style={{width: '100%'}}>
               <AntDesign name='arrowup' size={35} style={{marginLeft: 7}}/>
@@ -72,6 +73,7 @@ const mapStateToProps = state => {
   return {
     ipID: state.ipID,
     portID: state.portID,
+    top_velID: state.top_velID,
     vrefID: state.vrefID,
     wrefID: state.wrefID
   }

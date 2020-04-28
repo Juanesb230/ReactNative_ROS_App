@@ -1,6 +1,6 @@
 import {createStackNavigator} from 'react-navigation-stack'
 import Tray from '../containers/tc_screen';
-import TraySettings from '../containers/settings_pc'
+import TraySettings from '../containers/settings_tc'
 
 const HomeNavigator = createStackNavigator({
 

@@ -4,6 +4,7 @@ import { Container, Header, Left, Body, Right, Button, Icon, Title, Item,Input, 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as actions from '../../../actions'
 import {connect} from 'react-redux'
+import ROSLIB from 'roslib'
 
 class AnatomyExample extends Component {
 
@@ -11,7 +12,10 @@ class AnatomyExample extends Component {
     super(props)
     this.state = {
       ip:'localhost',
-      port:'9090'
+      port:'9090',
+      connected: false,
+      error: undefined,
+      url: "ws://localhost:9090",
     }
   }
   

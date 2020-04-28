@@ -12,6 +12,13 @@ export const port_master = (portID) => {
     }
 }
 
+export const topic_vel = (top_velID) => {
+    return {
+        type: 'topic_vel',
+        payload: top_velID
+    }
+}
+
 export const vref = (vrefID) => {
     return {
         type: 'vref',
@@ -23,5 +30,12 @@ export const wref = (wrefID) => {
     return {
         type: 'wref',
         payload: wrefID
+    }
+}
+
+export const topic_odom = (top_odomID) => {
+    return {
+        type: 'topic_odom',
+        payload: top_odomID
     }
 }

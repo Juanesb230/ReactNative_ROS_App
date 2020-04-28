@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Text } from 'native-base';
+import {View, ScrollView} from 'react-native'
+import { Container, Header, Left, Body, Right, Button, Icon, Title, Text, Form, Item, Label, Input } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import {connect} from 'react-redux'
 
 class AnatomyExample extends Component {
+
+  constructor(props){
+    super(props)
+    this.state = {
+      xref:'0.0',
+      yref:'0.0'
+    }
+  }
+
   registrer = () => {
         this.props.navigation.openDrawer()
   }
 
   registrer2 = () => {
     this.props.navigation.navigate('PostureSettings')
+  }
+
+  posRef = () =>{
+
   }
 
   render() {
@@ -30,8 +44,28 @@ class AnatomyExample extends Component {
             </Button>
           </Right>
         </Header>
-    <Text>IP : {this.props.ipID}</Text>
-    <Text>Port : {this.props.portID}</Text>
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          <View style={{flex:0.25, marginTop:'2%'}}>
+              <Text style={{textAlign: 'left'}}>Server connection: {this.props.ipID}:{this.props.portID}</Text>
+              <Text style={{textAlign: 'left', marginTop: '3%'}}>Velocity Topic: {this.props.top_velID}</Text>
+              <Text style={{textAlign: 'left'}}>Odometry Topic: {this.props.top_odomID}</Text>   
+          </View>
+          <View style={{marginBottom: '67%'}}>
+                <Form>
+                  <Item stackedLabel >
+                    <Label>x Position Reference (m)</Label>
+                    <Input value='0.0' keyboardType='phone-pad' onChangeText={(xref) => this.setState({xref})}/>
+                  </Item>
+                  <Item stackedLabel last>
+                    <Label>y Position Refrence (m)</Label>
+                    <Input value='0.0' keyboardType='phone-pad' onChangeText={(yref) => this.setState({yref})}/>
+                  </Item>
+                </Form>
+                <Button block style={{marginTop:'5%', width:'90%',marginLeft:'5%'}} onPress={this.posRef}>
+                  <Text>Set Position</Text>
+                </Button>
+          </View>
+        </ScrollView>
       </Container>
     );
   }
@@ -40,7 +74,9 @@ class AnatomyExample extends Component {
 const mapStateToProps = state => {
   return {
     ipID: state.ipID,
-    portID: state.portID
+    portID: state.portID,
+    top_velID: state.top_velID,
+    top_odomID: state.top_odomID
   }
 }
 
