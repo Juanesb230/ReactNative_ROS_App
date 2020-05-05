@@ -5,6 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import {connect} from 'react-redux'
+import * as ROSLIB from 'roslib'
 
 class AnatomyExample extends Component {
 

@@ -1,21 +1,18 @@
 import React, { Component } from 'react'
-import {StyleSheet, ScrollView} from 'react-native'
+import {StyleSheet, ScrollView, Alert} from 'react-native'
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Item,Input, Text } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as actions from '../../../actions'
 import {connect} from 'react-redux'
-import ROSLIB from 'roslib'
+import * as ROSLIB from 'roslib'
 
 class AnatomyExample extends Component {
 
   constructor(props){
     super(props)
     this.state = {
-      ip:'localhost',
-      port:'9090',
       connected: false,
       error: undefined,
-      url: "ws://localhost:9090",
     }
   }
   
@@ -28,9 +25,21 @@ class AnatomyExample extends Component {
   }
 
   save_ip = () => {
-    this.props.ip_master(this.state.ip)
-    this.props.port_master(this.state.port)
+    this.ros = new ROSLIB.Ros({url: "ws://" + this.props.ipID + ":" + this.props.portID})
+    this.ros.on ('connection', () => {
+      Alert.alert("Success","Connected to server: ws://" + this.props.ipID + ":" + this.props.portID)
+      this.state.connected = true
+    })
+    this.ros.on ('error', (error) => {
+      Alert.alert("Error","Type error: " + error)
+    })
+    this.ros.on ('close', () => {
+      Alert.alert("Closed connection","The server: "+ this.props.ipID + ":" + this.props.portID + " was close")
+      this.state.connected = false
+    })
   }
+
+
   render() {
 
     return (
@@ -55,11 +64,11 @@ class AnatomyExample extends Component {
             <Text style={{fontSize: 30, marginBottom:'15%',textAlign:'center', fontWeight: 'bold'}}>Mobile Robot Control</Text>
             <Text style={{fontSize: 20, marginBottom:'5%'}}>IP Adress:</Text>
             <Item rounded style={{width: '50%', borderColor:'black'}}>
-              <Input placeholder='e.g. 100.0.0.0' onChangeText={(ip) => this.setState({ip})} style={{textAlign:'center'}}/>
+              <Input placeholder='e.g. 100.0.0.0' onChangeText={(ip) => this.props.ip_master(ip)} style={{textAlign:'center'}}/>
             </Item>
             <Text style={{fontSize: 20, marginTop:'5%'}}>Port:</Text>
             <Item rounded style={{width: '50%', borderColor:'black', marginTop:'5%'}}>
-              <Input keyboardType='phone-pad' placeholder='e.g. 8081' onChangeText={(port) => this.setState({port})} style={{textAlign:'center'}}/>
+              <Input keyboardType='phone-pad' placeholder='e.g. 8081' onChangeText={(port) => this.props.port_master(port)} style={{textAlign:'center'}}/>
             </Item>
             <Button onPress={this.save_ip} rounded primary style={{width: '35%',marginLeft: '33%', marginTop:'5%'}}>
               <Text style={{marginLeft:'15%'}}>Connect</Text>
@@ -79,4 +88,11 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(null,actions)(AnatomyExample)
+const mapStateToProps = state => {
+  return {
+    ipID: state.ipID,
+    portID: state.portID,
+  }
+}
+
+export default connect(mapStateToProps,actions)(AnatomyExample)
