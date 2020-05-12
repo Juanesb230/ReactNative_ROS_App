@@ -5,6 +5,8 @@ import vReducer from './vReducer'
 import wReducer from './wReducers'
 import top_velReducer from './topic_velReducer'
 import top_odomReducer from './topic_odomReducer'
+import rosReducer from './rosReducer'
+import connectionReducer from './connectionReducer'
 
 const rootReducer = combineReducers({
     ipID: ipReducer,
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({
     vrefID: vReducer,
     wrefID: wReducer,
     top_velID: top_velReducer,
-    top_odomID: top_odomReducer
+    top_odomID: top_odomReducer,
+    rosID: rosReducer,
+    rosconID: connectionReducer
 })
 
 export default rootReducer

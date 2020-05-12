@@ -10,11 +10,80 @@ import * as ROSLIB from 'roslib'
 class AnatomyExample extends Component {
 
   registrer = () => {
-        this.props.navigation.openDrawer()  
+    if (this.props.rosconID){
+      this.stop()
+    }
+    this.props.navigation.openDrawer()  
   }
 
   registrer2 = () => {
+    if (this.props.rosconID){
+      this.stop()
+    }
     this.props.navigation.navigate('TeleSettings')
+  }
+
+  Topic_vel =() => {
+    this.topic = new ROSLIB.Topic({
+      ros: this.props.rosID,
+      name:this.props.top_velID,
+      messageType: 'geometry_msgs/Twist'
+    })
+  }
+
+  forward =() => {
+    if (this.props.rosconID){
+      this.message = new ROSLIB.Message({
+        linear: {x: parseFloat(this.props.vrefID), y: 0.0, z: 0.0},
+        angular: {x: 0.0, y: 0.0, z: 0.0 }
+      })
+      this.Topic_vel()
+      this.topic.publish(this.message)
+    }
+  }
+
+  behind =() => {
+    if (this.props.rosconID){
+      this.message = new ROSLIB.Message({
+        linear: {x: -parseFloat(this.props.vrefID), y: 0.0, z: 0.0},
+        angular: {x: 0.0, y: 0.0, z: 0.0 }
+      })
+      this.Topic_vel()
+      this.topic.publish(this.message)
+    }
+  }
+
+  left =() => {
+    if (this.props.rosconID){
+      this.message = new ROSLIB.Message({
+        linear: {x: 0.0, y: 0.0, z: 0.0},
+        angular: {x: 0.0, y: 0.0, z: parseFloat(this.props.wrefID) }
+      })
+      this.Topic_vel()
+      this.topic.publish(this.message)
+    }
+  }
+
+  right =() => {
+    if (this.props.rosconID){
+      this.message = new ROSLIB.Message({
+        linear: {x: 0.0, y: 0.0, z: 0.0},
+        angular: {x: 0.0, y: 0.0, z: - parseFloat(this.props.wrefID) }
+      })
+      this.Topic_vel()
+      this.topic.publish(this.message)
+    }
+  }
+
+  stop =() => {
+    if (this.props.rosconID){
+      this.message = new ROSLIB.Message({
+        linear: {x: 0.0, y: 0.0, z: 0.0},
+        angular: {x: 0.0, y: 0.0, z: 0.0 }
+      })
+      this.Topic_vel()
+      this.topic.publish(this.message)
+    }
   }
 
   render() {
@@ -44,23 +113,23 @@ class AnatomyExample extends Component {
           </View>
         <View style={{flex: 1, flexDirection: 'column',justifyContent: 'space-around', alignItems: 'center', marginTop:'18%'}}>        
           <View style={{width: 50, height: 50}} >
-            <Button large light style={{width: '100%'}}>
+            <Button large light style={{width: '100%'}} onPress={this.forward}>
               <AntDesign name='arrowup' size={35} style={{marginLeft: 7}}/>
             </Button>
           </View>
           <View style={{width: '100%', height: 50, flexDirection: 'row', justifyContent: 'space-around'}} >
-            <Button large light style={{width: '15%'}}>
+            <Button large light style={{width: '15%'}} onPress={this.left}>
               <Feather name='rotate-ccw' size={30} style={{marginLeft: 13}}/>
             </Button>
-            <Button large light style={{width: '15%'}}>
+            <Button large light style={{width: '15%'}} onPress={this.stop}>
               <FontAwesome name='stop-circle-o' size={30} style={{marginLeft: 13}}/>
             </Button>
-            <Button large light style={{width: '15%'}}>
+            <Button large light style={{width: '15%'}} onPress={this.right}>
               <Feather name='rotate-cw' size={30} style={{marginLeft: 11}}/>
             </Button>
           </View>
           <View style={{width: 50, height: 50}} >
-            <Button large light style={{width: '100%'}}>
+            <Button large light style={{width: '100%'}} onPress={this.behind}>
               <AntDesign name='arrowdown' size={35} style={{marginLeft: 7}}/>
             </Button>
           </View>
@@ -76,7 +145,9 @@ const mapStateToProps = state => {
     portID: state.portID,
     top_velID: state.top_velID,
     vrefID: state.vrefID,
-    wrefID: state.wrefID
+    wrefID: state.wrefID,
+    rosID: state.rosID,
+    rosconID: state.rosconID
   }
 }
 

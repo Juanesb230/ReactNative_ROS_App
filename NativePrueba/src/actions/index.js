@@ -39,3 +39,17 @@ export const topic_odom = (top_odomID) => {
         payload: top_odomID
     }
 }
+
+export const ros_node = (rosID) => {
+    return {
+        type: 'ros_node',
+        payload: rosID
+    }
+}
+
+export const ros_connection = (rosconID) => {
+    return {
+        type: 'ros_connection',
+        payload: rosconID
+    }
+}

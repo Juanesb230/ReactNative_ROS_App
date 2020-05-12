@@ -26,9 +26,11 @@ class AnatomyExample extends Component {
 
   save_ip = () => {
     this.ros = new ROSLIB.Ros({url: "ws://" + this.props.ipID + ":" + this.props.portID})
+    this.props.ros_node(this.ros)
     this.ros.on ('connection', () => {
       Alert.alert("Success","Connected to server: ws://" + this.props.ipID + ":" + this.props.portID)
       this.state.connected = true
+      this.props.ros_connection(this.state.connected)
     })
     this.ros.on ('error', (error) => {
       Alert.alert("Error","Type error: " + error)
@@ -36,6 +38,7 @@ class AnatomyExample extends Component {
     this.ros.on ('close', () => {
       Alert.alert("Closed connection","The server: "+ this.props.ipID + ":" + this.props.portID + " was close")
       this.state.connected = false
+      this.props.ros_connection(this.state.connected)
     })
   }
 
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     ipID: state.ipID,
-    portID: state.portID,
+    portID: state.portID
   }
 }
 
