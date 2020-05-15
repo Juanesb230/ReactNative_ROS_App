@@ -9,6 +9,35 @@ import * as ROSLIB from 'roslib'
 
 class AnatomyExample extends Component {
 
+  componentDidMount() {
+    this.didFocusListener = this.props.navigation.addListener('didFocus', () => {
+      this.someAction();
+    })
+  }
+
+  someAction() {
+    if (this.props.rosconID){
+      this.string = new ROSLIB.Message({
+        data: 'Teleoperation'
+      })
+      this.Topic_mode()
+      this.topic2.publish(this.string)
+    }
+  }
+
+  componentWillUnmount() {
+    this.didFocusListener.remove();
+  }
+
+
+  Topic_mode = () =>{
+    this.topic2 = new ROSLIB.Topic({
+      ros: this.props.rosID,
+      name: '/mode',
+      messageType: 'std_msgs/String'
+    })
+  }
+  
   registrer = () => {
     if (this.props.rosconID){
       this.stop()

@@ -3,8 +3,37 @@ import { ScrollView, View } from 'react-native'
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Text, Content, Radio, ListItem } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import {connect} from 'react-redux'
+import * as ROSLIB from 'roslib'
 
 class AnatomyExample extends Component {
+
+  componentDidMount() {
+    this.didFocusListener = this.props.navigation.addListener('didFocus', () => {
+      this.someAction();
+    })
+  }
+
+  someAction() {
+    if (this.props.rosconID){
+      this.string = new ROSLIB.Message({
+        data: 'Tray Control'
+      })
+      this.Topic_mode()
+      this.topic2.publish(this.string)
+    }
+  }
+
+  componentWillUnmount() {
+    this.didFocusListener.remove();
+  }
+
+  Topic_mode = () =>{
+    this.topic2 = new ROSLIB.Topic({
+      ros: this.props.rosID,
+      name: '/mode',
+      messageType: 'std_msgs/String'
+    })
+  }
 
   constructor() {
     super();
@@ -95,7 +124,9 @@ const mapStateToProps = state => {
     ipID: state.ipID,
     portID: state.portID,
     top_velID: state.top_velID,
-    top_odomID: state.top_odomID
+    top_odomID: state.top_odomID,
+    rosID: state.rosID,
+    rosconID: state.rosconID
   }
 }
 
