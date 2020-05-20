@@ -18,6 +18,7 @@ class AnatomyExample extends Component {
       this.string = new ROSLIB.Message({
         data: 'Tray Control'
       })
+      this.Param_tray()
       this.Topic_mode()
       this.topic2.publish(this.string)
     }
@@ -39,7 +40,18 @@ class AnatomyExample extends Component {
     super();
     this.state = {
      itemSelected: 'itemOne',
+     mode: 0
    }
+  }
+
+  Param_tray = () => {
+    if (this.props.rosconID){
+      this.tray = new ROSLIB.Param({
+        ros : this.props.rosID,
+        name : 'TrayMode'
+      })
+      this.tray.set(parseInt(this.state.mode))
+    }
   }
 
   registrer = () => {
@@ -48,6 +60,30 @@ class AnatomyExample extends Component {
 
   registrer2 = () => {
     this.props.navigation.navigate('TraySettings')
+  }
+
+  setInit = () => {
+    this.state.mode= 0
+    this.setState({itemSelected : 'itemOne'})
+    this.Param_tray()
+  }
+
+  setCircle = () => {
+    this.state.mode= 1
+    this.setState({itemSelected : 'itemTwo'})
+    this.Param_tray()
+  }
+
+  setEigth = () => {
+    this.state.mode= 2
+    this.setState({itemSelected : 'itemThree'})
+    this.Param_tray()
+  }
+
+  setHeart = () => {
+    this.state.mode= 3
+    this.setState({itemSelected : 'itemFour'})
+    this.Param_tray()
   }
 
   render() {
@@ -81,7 +117,7 @@ class AnatomyExample extends Component {
                 <Text>Initial Position</Text>
               </Left>
               <Right>
-                <Radio onPress={() => this.setState({ itemSelected: 'itemOne' })}
+                <Radio onPress={this.setInit}
                 selected={this.state.itemSelected == 'itemOne'} />
               </Right>
             </ListItem>
@@ -90,7 +126,7 @@ class AnatomyExample extends Component {
                 <Text>Circle</Text>
               </Left>
               <Right>
-                <Radio onPress={() => this.setState({ itemSelected: 'itemTwo' })}
+                <Radio onPress={this.setCircle}
                 selected={this.state.itemSelected == 'itemTwo'} />
               </Right>
             </ListItem>
@@ -99,16 +135,16 @@ class AnatomyExample extends Component {
                 <Text>Eigth</Text>
               </Left>
               <Right>
-                <Radio onPress={() => this.setState({ itemSelected: 'itemThree' })}
+                <Radio onPress={this.setEigth}
                 selected={this.state.itemSelected == 'itemThree'} />
               </Right>
             </ListItem>
             <ListItem>
               <Left>
-                <Text>Circle</Text>
+                <Text>Heart</Text>
               </Left>
               <Right>
-                <Radio onPress={() => this.setState({ itemSelected: 'itemFour' })}
+                <Radio onPress={this.setHeart}
                 selected={this.state.itemSelected == 'itemFour'} />
               </Right>
             </ListItem>

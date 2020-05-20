@@ -20,6 +20,7 @@ class AnatomyExample extends Component {
       this.string = new ROSLIB.Message({
         data: 'Teleoperation'
       })
+      this.stop()
       this.Topic_mode()
       this.topic2.publish(this.string)
     }
