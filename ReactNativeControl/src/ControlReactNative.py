@@ -2,6 +2,7 @@
 import rospy
 from std_msgs.msg import String
 import math
+import tf
 from tf.transformations import euler_from_quaternion
 from nav_msgs.msg import Odometry
 import geometry_msgs.msg
@@ -36,7 +37,7 @@ def callback(data):
 def PostureReference(x_ant,y_ant):
 
     x = rospy.get_param('x_position',x_ant)
-    x = rospy.get_param('x_position',y_ant)
+    y = rospy.get_param('y_position',y_ant)
     return x, y
 
 def TrayReference(tray):
@@ -77,6 +78,7 @@ if __name__ == '__main__':
     diff_vel = rospy.Publisher('/mobile_base_controller/cmd_vel', geometry_msgs.msg.Twist,queue_size=1)
     rospy.Subscriber("mode", String, callback)
     sub_odom = rospy.Subscriber('/mobile_base_controller/odom',Odometry,Odom)
+    br = tf.TransformBroadcaster()
     rate = rospy.Rate(10.0)
     while not rospy.is_shutdown():
         if OperationType != 'Teleoperation':
@@ -85,11 +87,15 @@ if __name__ == '__main__':
                 diff_vel = rospy.Publisher('/mobile_base_controller/cmd_vel', geometry_msgs.msg.Twist,queue_size=1)
                 a = 1
             if OperationType == 'Posture Control':
-                print('Posture Control Mode')
                 p_ref[0, 0], p_ref[1, 0] = PostureReference(p_ref[0, 0], p_ref[1, 0])               
             else:
-                print('Trajectory Control Mode')
                 p_ref[0, 0], p_ref[1, 0], m = TrayReference(m)
+
+            br.sendTransform(( p_ref[0, 0], p_ref[1, 0], 0.0),
+                    (0.0, 0.0, 0.0, 1.0),
+                    rospy.Time.now(),
+                    "ref",
+                    "odom")
 
             linear, angular = Control(theta, x, y, p_ref_ant, p_ref, [0.6, 0.6])
             cmd = geometry_msgs.msg.Twist()
@@ -97,7 +103,6 @@ if __name__ == '__main__':
             cmd.angular.z = angular
             diff_vel.publish(cmd)
         else:
-            print('Teleoperation Mode')
             a = 0
             diff_vel.unregister()
         rate.sleep()
