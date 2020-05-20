@@ -63,6 +63,8 @@ class AnatomyExample extends Component {
     })
     this.ros.on ('error', (error) => {
       Alert.alert("Error","Type error: " + error)
+      this.state.connected = false
+      this.props.ros_connection(this.state.connected)
     })
     this.ros.on ('close', () => {
       Alert.alert("Closed connection","The server: "+ this.props.ipID + ":" + this.props.portID + " was close")
