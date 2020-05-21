@@ -63,7 +63,7 @@ The App is a ROS node that can communicate with the master with rosbridge. For t
 And the next animation shows the communication of the App with the master node with rosbridge.
 
 <p align="center">
-  <img src="Images/connectionROS.gif">
+  <img src="Images/connectionRos.gif">
 </p>
 
 ## 4. Results
